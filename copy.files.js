@@ -14,12 +14,7 @@ const args = parser.parse_args();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const sourceDir = path.join(__dirname, path.dirname(legoConfig.sourceDir));
-var legoFile = "";
-for (var item of legoConfig.importPath.split("/")) {
-    if (item.startsWith("lego.") && item.endsWith(".js")) {
-        legoFile = item;
-    }
-}
+const legoFile = path.basename(legoConfig.importPath);
 
 
 if (process.platform == "darwin") {
@@ -31,6 +26,10 @@ if (process.platform == "darwin") {
 
 if (args.copyType == "build") {
     const destDir = path.join(__dirname, path.dirname(legoConfig.targetDir));
+    const bricksDir = path.join(__dirname, ...legoConfig.targetDir.split("/"));
+    if (!fs.existsSync(bricksDir)) {
+        fs.mkdirSync(bricksDir, { recursive: true });
+    }
 
     for (var srcFile of globSync(path.join(sourceDir, "*.*"), { ignore: "**/index.rollup.html" })) {
         const srcFileName = path.basename(srcFile);
@@ -44,6 +43,9 @@ if (args.copyType == "build") {
 }
 else if (args.copyType == "rollup") {
     const rollupDir = path.join(__dirname, rollupConfig.output.file.split("/")[0]);
+    if (!fs.existsSync(rollupDir)) {
+        fs.mkdirSync(rollupDir, { recursive: true });
+    }
 
     for (var srcFile of globSync(path.join(sourceDir, "*.*"), { ignore: "**/index.html" })) {
         const srcFileName = path.basename(srcFile);
