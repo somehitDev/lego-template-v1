@@ -2,7 +2,7 @@
     Lego.js template
 </h1>
 <p align="center">
-    <a href="https://lego.js.org/v1">Lego.js</a> template for 1.x versions
+    <a href="https://lego.js.org/v1" target="_blank">Lego.js</a> template for 1.x versions
 </p>
 <br/>
 
